@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "http://resources.openmrs.org/doctype/config-1.2.dtd">
+
+<module configVersion="1.2">
+    <!-- Base Module Properties -->
+    <id>@MODULE_ID@</id>
+    <name>@MODULE_NAME@</name>
+    <version>@MODULE_VERSION@</version>
+    <package>@MODULE_PACKAGE@</package>
+    <author>Saptarshi P</author>
+    <description>
+            Captures patient image and displays in patient dashboard
+    </description>
+    <activator>@MODULE_PACKAGE@.PatientImageActivator</activator>
+    <!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
+    <!-- /Base Module Properties -->
+	
+    <require_version>1.5.0.7125</require_version>
+	
+    <!-- Extensions -->
+    <extension>
+        <point>org.openmrs.patientDashboardTab</point>
+        <class>@MODULE_PACKAGE@.extension.html.PatientImageDashboardExt</class>
+    </extension>
+    
+    <!-- Required Privileges-->
+    <privilege>
+        <name>Patient Dashboard - Manage Patient Image</name>
+        <description>Allows user to capture, upload patient images from dashboard</description>
+    </privilege>
+    <!--Required Privileges -->
+	
+    <!-- Required Global Properties --> 
+    <globalProperty>
+        <property>@MODULE_ID@.showOnDashboard</property>
+        <defaultValue></defaultValue>
+        <description>
+            Whether to show the patient image on the dashboard
+        </description>
+    </globalProperty>
+    <!--/Required Global Properties -->
+		
+    <!-- Servlets -->
+    <!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> --> 
+    <servlet>
+        <servlet-name>PatientImageSave</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.servlet.PatientImageSave</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.servlet.ImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PatientImageUpload</servlet-name>
+        <servlet-class>@MODULE_PACKAGE@.servlet.PatientImageUpload</servlet-class>
+    </servlet>
+    <!-- /Servlets -->
+
+        
+    <!-- Internationalization -->
+    <!-- All message codes should start with @MODULE_ID@.* -->
+    <messages>
+        <lang>en</lang>
+        <file>messages.properties</file>
+    </messages>
+    <messages>
+        <lang>fr</lang>
+        <file>messages_fr.properties</file>
+    </messages>
+    <messages>
+        <lang>es</lang>
+        <file>messages_es.properties</file>
+    </messages>
+    <!-- /Internationalization -->
+</module>
+
