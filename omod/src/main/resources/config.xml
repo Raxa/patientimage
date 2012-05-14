@@ -16,7 +16,11 @@
     <!-- /Base Module Properties -->
 	
     <require_version>1.5.0.7125</require_version>
-	
+
+    <require_modules>
+      <require_module version="0.9">org.openmrs.module.webservices.rest</require_module>
+    </require_modules>
+
     <!-- Extensions -->
     <extension>
         <point>org.openmrs.patientDashboardTab</point>
