@@ -13,11 +13,9 @@
  */
 package org.openmrs.module.patientimage.rest.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientimage.rest.resource.PatientImageResource;
@@ -34,16 +32,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/rest/patientimage")
 public class PatientImageController extends BaseRestController {
 	
 	/**
-	 * @param uuid uuid of the datasetdefinition to process
-	 * @param request
-	 * @return
+	 * @param patientid int
+	 * @param pageid int
+	 * @return ResponseEntity<byte[]> containing image binary data with JPEG
+	 * 	image header.
 	 * @throws ResponseException
 	 * @throws IOException 
 	 */

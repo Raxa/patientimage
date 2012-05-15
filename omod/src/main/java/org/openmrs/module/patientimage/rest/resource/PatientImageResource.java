@@ -25,6 +25,14 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 public class PatientImageResource implements Resource {
 	
+	/**
+	 * @param patientId
+	 * @param pageId
+	 * @param context
+	 * @return byte[] of image data.
+	 * @throws ResponseException
+	 * @throws IOException
+	 */
 	public byte[] retrieve(int patientId, int pageId, RequestContext context) throws ResponseException, IOException {
 		InputStream in = new FileInputStream(PatientImageService.getImagePath(patientId, pageId));
 		return IOUtils.toByteArray(in);
@@ -32,6 +40,7 @@ public class PatientImageResource implements Resource {
 	
 	@Override
 	public String getUri(Object arg0) {
+		// Unused.
 		return null;
 	}
 	
