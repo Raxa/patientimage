@@ -3,7 +3,7 @@ package org.openmrs.module.patientimage.servlet;
 import org.openmrs.util.OpenmrsUtil;
 
 public class PatientImageService {
-
+	
 	/**
 	 * @param patientId int
 	 * @param pageId int

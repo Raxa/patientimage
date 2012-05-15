@@ -53,7 +53,16 @@ public class PatientImageController extends BaseRestController {
 		int patientId = Integer.parseInt(patientIdStr);
 		int pageId = Integer.parseInt(pageIdStr);
 		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.IMAGE_JPEG);
-		return new ResponseEntity<byte[]>(r.retrieve(patientId, pageId, context), headers, HttpStatus.OK);
+		byte[] imageData = null;
+		HttpStatus status = null;
+		try {
+			imageData = r.retrieve(patientId, pageId, context);
+			headers.setContentType(MediaType.IMAGE_JPEG);
+			status = HttpStatus.OK;
+		}
+		catch (IOException e) {
+			status = HttpStatus.NOT_FOUND;
+		}
+		return new ResponseEntity<byte[]>(imageData, headers, status);
 	}
 }
