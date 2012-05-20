@@ -47,8 +47,8 @@ public class PatientImageController extends BaseRestController {
 	 */
 	@RequestMapping(value = "/{patientid}/{pageid}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> retrieve(@PathVariable("patientid") String patientIdStr,
-	        @PathVariable("pageid") String pageIdStr, HttpServletRequest request) throws ResponseException, IOException {
-		RequestContext context = RestUtil.getRequestContext(request);
+	        @PathVariable("pageid") String pageIdStr, HttpServletRequest request) throws IOException {
+		//RequestContext context = RestUtil.getRequestContext(request);
 		PatientImageResource r = Context.getService(RestService.class).getResource(PatientImageResource.class);
 		int patientId = Integer.parseInt(patientIdStr);
 		int pageId = Integer.parseInt(pageIdStr);
@@ -56,7 +56,7 @@ public class PatientImageController extends BaseRestController {
 		byte[] imageData = null;
 		HttpStatus status = null;
 		try {
-			imageData = r.retrieve(patientId, pageId, context);
+			imageData = r.retrieve(patientId, pageId);
 			headers.setContentType(MediaType.IMAGE_JPEG);
 			status = HttpStatus.OK;
 		}

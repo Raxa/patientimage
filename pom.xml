@@ -62,13 +62,13 @@
 	    <dependency>
 	      <groupId>org.openmrs.module</groupId>
 	      <artifactId>webservices.rest-api</artifactId>
-	      <version>0.9-SNAPSHOT</version>
+	      <version>0.8</version>
 	      <type>provided</type>
 	    </dependency>
 	    <dependency>
 	      <groupId>org.openmrs.module</groupId>
 	      <artifactId>webservices.rest-omod</artifactId>
-	      <version>0.9-SNAPSHOT</version>
+	      <version>0.8</version>
 	      <type>provided</type>
 	    </dependency>
         </dependencies>

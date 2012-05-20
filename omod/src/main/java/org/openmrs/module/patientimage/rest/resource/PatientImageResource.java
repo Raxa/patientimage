@@ -19,7 +19,6 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.openmrs.module.patientimage.servlet.PatientImageService;
-import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.resource.api.Resource;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
@@ -28,12 +27,11 @@ public class PatientImageResource implements Resource {
 	/**
 	 * @param patientId
 	 * @param pageId
-	 * @param context
 	 * @return byte[] of image data.
 	 * @throws ResponseException
 	 * @throws IOException
 	 */
-	public byte[] retrieve(int patientId, int pageId, RequestContext context) throws ResponseException, IOException {
+	public byte[] retrieve(int patientId, int pageId) throws IOException {
 		InputStream in = new FileInputStream(PatientImageService.getImagePath(patientId, pageId));
 		return IOUtils.toByteArray(in);
 	}
