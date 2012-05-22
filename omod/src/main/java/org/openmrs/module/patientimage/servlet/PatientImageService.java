@@ -10,7 +10,6 @@ public class PatientImageService {
 	 * @return String path to given image.
 	 */
 	public static String getImagePath(int patientId, int pageId) {
-		return OpenmrsUtil.getApplicationDataDirectory()
-		        + patientId + System.getProperty("file.separator") + pageId;
+		return OpenmrsUtil.getApplicationDataDirectory() + patientId + System.getProperty("file.separator") + pageId;
 	}
 }
