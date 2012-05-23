@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(value = "/rest/patientimage")
+@RequestMapping(value = "/rest/v1/patientimage/patientimage")
 public class PatientImageController extends BaseRestController {
 	
 	/**

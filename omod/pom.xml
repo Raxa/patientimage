@@ -45,16 +45,16 @@
             <type>pom</type>
         </dependency>	
 	<dependency>
-	  <groupId>org.openmrs.module</groupId>
-	  <artifactId>webservices.rest-api</artifactId>
-	  <version>0.8</version>
-	  <type>jar</type>
+	    <groupId>org.openmrs.module</groupId>
+	    <artifactId>webservices.rest-api</artifactId>
+	    <version>0.8</version>
+	    <type>jar</type>
 	</dependency>
 	<dependency>
-	  <groupId>org.openmrs.module</groupId>
-	  <artifactId>webservices.rest-omod</artifactId>
-	  <version>0.8</version>
-	  <type>jar</type>
+	    <groupId>org.openmrs.module</groupId>
+	    <artifactId>webservices.rest-omod</artifactId>
+	    <version>0.8</version>
+	    <type>jar</type>
 	</dependency>
     </dependencies>
     <build>
