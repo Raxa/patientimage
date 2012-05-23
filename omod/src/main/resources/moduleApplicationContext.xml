@@ -12,4 +12,5 @@
     </bean>
     
     <bean id="patientImagePortletController" class="@MODULE_PACKAGE@.web.controller.PatientImagePortletController" />
+    <bean id="patientImageController" class="@MODULE_PACKAGE@.rest.controller.PatientImageController" />
 </beans>
