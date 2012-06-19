@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="initApp()" horizontalAlign="left" verticalAlign="top" width="320" height="360">
+	<mx:Script>
+		<![CDATA[
+			import flash.external.ExternalInterface;
+			import flash.net.navigateToURL;
+			import flash.net.sendToURL;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.messaging.channels.StreamingAMFChannel;
+			import mx.rpc.http.HTTPService;
+			import mx.utils.Base64Encoder;
+
+			private var cam:Camera;
+			
+			private function setUpCam():void
+			{
+				cam=Camera.getCamera();
+				if (cam != null)
+				{
+					cam.setQuality(0, 100);
+					cam.setMode(640,640,30);
+					vd.attachCamera(cam);
+				}
+				else
+				{
+					trace("You need a camera.");
+				}
+			}
+
+			private function takePhoto():void
+			{
+				cmdSave.enabled = true;
+				cmdRetake.enabled = true;
+				vd.attachCamera(null);
+			}
+
+			private function retakePhoto():void
+			{
+				cmdSave.enabled = false;
+				cmdRetake.enabled = false;
+				cmdSnap.enabled = true;
+				vd.attachCamera(cam);
+			}
+
+			private function saveImage():void 
+			{
+				var bitmapData:BitmapData=new BitmapData(vd.width, vd.height);
+				bitmapData.draw(vd);
+				var jpgEncoder:JPEGEncoder=new JPEGEncoder(100);
+				var imageData:ByteArray=jpgEncoder.encode(bitmapData);
+
+				var encoder:Base64Encoder=new Base64Encoder();
+				encoder.encodeBytes(imageData);
+				var imgName:String = ExternalInterface.call("getPatientId");
+				var contextName:String = ExternalInterface.call("getPageContext");
+				var imageSaveUrl:String = contextName + "moduleServlet/patientimage/PatientImageSave";
+				var params:Object={image_data: encoder.flush(), image_name: imgName};
+				imageSend.url = imageSaveUrl;
+				imageSend.send(params);
+				
+				cmdSave.enabled=false;
+				cmdSnap.enabled=false;
+			}
+			
+			protected function initApp():void 
+			{
+				this.addEventListener(MouseEvent.CLICK, clickHandler);
+			}
+			
+			private function clickHandler(event:MouseEvent):void
+			{
+      			stage.focus = this;
+    		}
+		]]>
+	</mx:Script>
+	<mx:VideoDisplay id="vd" creationComplete="setUpCam()" width="320" height="320"/>
+	<mx:Button x="10" y="330" label="Take Photo" id="cmdSnap" enabled="true" click="takePhoto()" />
+	<mx:Button x="108" y="330" label="Save Photo" id="cmdSave" enabled="false" click="saveImage()"/>
+	<mx:Button x="206" y="330" label="Retake Photo" id="cmdRetake" enabled="false" click="retakePhoto()"/>
+	<mx:HTTPService id="imageSend" showBusyCursor="true" useProxy="false" url="" method="POST"/>
+</mx:Application>
