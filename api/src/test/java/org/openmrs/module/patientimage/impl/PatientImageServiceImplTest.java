@@ -16,6 +16,9 @@ package org.openmrs.module.patientimage.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
@@ -107,6 +110,29 @@ public class PatientImageServiceImplTest extends BaseModuleContextSensitiveTest{
      */
     @Test
     public void testGetAllImages() {
+        int patientId = 2;
+        byte[][] images = new byte[3][4];
+        images[0] = new byte[]{1, 2, 3, 4};
+        images[1] = new byte[]{4, 3, 2, 1};
+        images[2] = new byte[]{5, 5, 5, 5};
+        for (int i = 0; i < images.length; i++) {
+            PatientImage p = new PatientImage();
+            p.setId(i+5);
+            p.setPatientId(patientId);
+            p.setImageData(images[i]);
+            s.createImage(p);
+        }
         
+        List<PatientImage> ret = s.getAllImages(patientId);
+        assert(ret.size() == images.length);
+        for (int i = 0; i < images.length; i++) {
+        	// Assert that it's in the returned list, but can't assume order.
+        	boolean pass = false;
+        	for (PatientImage p : ret) {
+        		if (Arrays.equals(p.getImageData(), images[i]));
+        			pass = true;
+        	}
+        	assert(pass);
+        }
     }
 }

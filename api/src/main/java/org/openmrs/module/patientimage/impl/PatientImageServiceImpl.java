@@ -132,8 +132,8 @@ public class PatientImageServiceImpl implements PatientImageService {
         String imgs[] = imgDir.list();
         List<PatientImage> pImages = new ArrayList<PatientImage>();
         for(int i=0; i<imgs.length; i++){
-            System.out.println(imgs[i].split(".")[0]);
-            PatientImage p = getPatientImage(patientId, Integer.parseInt(imgs[i].split(".")[0]));
+            System.out.println(imgs[i].split("\\.")[0]);
+            PatientImage p = getPatientImage(patientId, Integer.parseInt(imgs[i].split("\\.")[0]));
             pImages.add(p);
         }
         return pImages;
