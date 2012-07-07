@@ -71,6 +71,12 @@ public interface PatientImageService extends OpenmrsService{
      */
     @Authorized({"View Patient Images"})
     public String getPath(int patientId, int pageId);
+    
+    /*
+     * Returns patient image directory
+     */
+    @Authorized({"View Patient Images"})
+    public String getPath(int patientId);
 
     /*
      * Returns image path as a string
