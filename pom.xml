@@ -59,12 +59,24 @@
                 <type>pom</type>
                 <scope>test</scope>
             </dependency>
+	    <dependency>
+	        <groupId>org.openmrs.module</groupId>
+	        <artifactId>webservices.rest-api</artifactId>
+	        <version>0.8</version>
+	        <type>provided</type>
+	    </dependency>
+	    <dependency>
+	      <groupId>org.openmrs.module</groupId>
+	      <artifactId>webservices.rest-omod</artifactId>
+	      <version>0.8</version>
+	      <type>provided</type>
+	    </dependency>
         </dependencies>
     </dependencyManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <openMRSVersion>1.8.0</openMRSVersion>
+        <openMRSVersion>1.8.1</openMRSVersion>
     </properties>
 
     <build>
