@@ -17,7 +17,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -35,6 +38,8 @@ public class PatientImageServiceImpl implements PatientImageService {
 
     protected final Log log = LogFactory.getLog(getClass());
     private static final String IMGDIR = "patientimages";
+    // A mapping of patientId to the next potential page
+    private Map<Integer, Integer> nextPages;
 
     private Boolean isValidPatientImage(PatientImage p) {
         Patient patient = Context.getPatientService().getPatient(p.getPatientId());
@@ -51,8 +56,8 @@ public class PatientImageServiceImpl implements PatientImageService {
             return new PatientImage();
         }
         File imgDir = new File(OpenmrsUtil.getApplicationDataDirectory() + System.getProperty("file.separator") + IMGDIR);
-        File patientDir = new File(imgDir.getPath() + System.getProperty("file.separator") + p.getPatientId());
-        File img = new File(patientDir + System.getProperty("file.separator") + p.getId() + ".jpg");
+        File patientDir = new File(getPath(p.getPatientId()));
+        File img = new File(getPath(p.getId()));
         try {
             if (!imgDir.exists()) {
                 FileUtils.forceMkdir(imgDir);
@@ -80,8 +85,26 @@ public class PatientImageServiceImpl implements PatientImageService {
     public PatientImage createImage(int patientId, byte[] imageData) {
         PatientImage p = new PatientImage();
         //Context.getPatientService().getPatient(patientId).
-        //TODO: need some way to get pageId or generate it
-        p.setId(5);
+        // Find the next page to use.
+        // Find how many files currently exist.
+        // Lazily compute the next page to use and store it.
+        int nextPage = 0;
+        if (nextPages.containsKey(patientId)) {
+        	nextPage = nextPages.get(patientId);
+        } else {
+        	File imgDir = new File(getPath(patientId));
+        	if (imgDir.exists()) {
+        		String imgs[] = imgDir.list();
+        		nextPage = imgs.length;
+        	}
+        }
+        File newPage;
+        do {
+        	newPage = new File(getPath(patientId, nextPage));
+        	nextPage++;
+        } while (newPage.exists()); 
+
+        p.setId(nextPage-1);
         p.setPatientId(patientId);
         p.setImageData(imageData);
         return saveOrUpdateImage(p);
@@ -102,12 +125,13 @@ public class PatientImageServiceImpl implements PatientImageService {
             System.out.println("is deleting:" + img.delete());
             System.out.println(img.exists());
         } catch (Exception e) {
-            log.error(e);
+        	log.error(e);
         }
     }
 
     public void onStartup() {
-        log.info("Patient Image Service Starting");
+    	nextPages = new HashMap<Integer, Integer>();
+    	log.info("Patient Image Service Starting");
     }
 
     public void onShutdown() {
@@ -115,11 +139,14 @@ public class PatientImageServiceImpl implements PatientImageService {
     }
 
     public String getPath(int patientId, int pageId) {
-        return OpenmrsUtil.getApplicationDataDirectory() + System.getProperty("file.separator") + 
-                IMGDIR + System.getProperty("file.separator") + patientId + 
-                System.getProperty("file.separator") + pageId + ".jpg";
+        return getPath(patientId) +
+        		System.getProperty("file.separator") + pageId + ".jpg";
     }
 
+    public String getPath(int patientId) {
+    	return OpenmrsUtil.getApplicationDataDirectory() + System.getProperty("file.separator") + 
+                IMGDIR + System.getProperty("file.separator") + patientId;
+    }
     public String getPath(PatientImage p) {
         return OpenmrsUtil.getApplicationDataDirectory() + System.getProperty("file.separator") + 
                 IMGDIR + System.getProperty("file.separator") + p.getPatientId() + 
@@ -127,13 +154,12 @@ public class PatientImageServiceImpl implements PatientImageService {
     }
 
     public List<PatientImage> getAllImages(int patientId) {
-        File imgDir = new File(OpenmrsUtil.getApplicationDataDirectory() + System.getProperty("file.separator") + 
-                IMGDIR + System.getProperty("file.separator") + patientId);
-        String imgs[] = imgDir.list();
+        File imgDir = new File(getPath(patientId));
         List<PatientImage> pImages = new ArrayList<PatientImage>();
-        for(int i=0; i<imgs.length; i++){
-            System.out.println(imgs[i].split(".")[0]);
-            PatientImage p = getPatientImage(patientId, Integer.parseInt(imgs[i].split(".")[0]));
+        String imgs[] = imgDir.list();
+        for(int i=0; imgs != null && i<imgs.length; i++){
+            System.out.println(imgs[i].split("\\.")[0]);
+            PatientImage p = getPatientImage(patientId, Integer.parseInt(imgs[i].split("\\.")[0]));
             pImages.add(p);
         }
         return pImages;
