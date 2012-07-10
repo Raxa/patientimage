@@ -16,11 +16,7 @@
     <!-- /Base Module Properties -->
 	
     <require_version>1.5.0.7125</require_version>
-
-    <require_modules>
-        <require_module version="0.8">org.openmrs.module.webservices.rest</require_module>
-    </require_modules>
-
+	
     <!-- Extensions -->
     <extension>
         <point>org.openmrs.patientDashboardTab</point>
@@ -32,7 +28,22 @@
         <name>Patient Dashboard - Manage Patient Image</name>
         <description>Allows user to capture, upload patient images from dashboard</description>
     </privilege>
-    <!--Required Privileges -->
+    <privilege>
+        <name>Add Patient Images</name>
+        <description>Ability to create patient images</description>
+    </privilege>
+    <privilege>
+        <name>Delete Patient Images</name>
+        <description>Ability to delete patient images</description>
+    </privilege>
+    <privilege>
+        <name>Edit Patient Images</name>
+        <description>Ability to edit patient images</description>
+    </privilege>
+    <privilege>
+        <name>View Patient Images</name>
+        <description>Ability to view patient images</description>
+    </privilege>
 	
     <!-- Required Global Properties --> 
     <globalProperty>
